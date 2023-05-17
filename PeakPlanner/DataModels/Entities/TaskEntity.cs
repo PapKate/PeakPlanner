@@ -1,4 +1,6 @@
-﻿namespace PeakPlannerAPI
+﻿using FoPeakPlannerAPIoli;
+
+namespace PeakPlannerAPI
 {
     /// <summary>
     /// The task entity
@@ -37,6 +39,26 @@
         {
 
         }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Creates and returns a <see cref="TaskEntity"/> from the specified <paramref name="model"/>
+        /// </summary>
+        /// <param name="projectId">The company's id</param>
+        /// <param name="model">The model</param>
+        /// <returns></returns>
+        public static TaskEntity FromRequestModel(int projectId, TaskRequestModel model)
+            => ControllerHelpers.FromRequestModel(model, (TaskEntity entity) => { entity.ProjectId = projectId; });
+
+        /// <summary>
+        /// Creates and returns a <see cref="TaskResponseModel"/> from the current <see cref="TaskEntity"/>
+        /// </summary>
+        /// <returns></returns>
+        public TaskResponseModel ToResponseModel()
+            => ControllerHelpers.ToResponseModel<TaskEntity, TaskResponseModel>(this);
 
         #endregion
     }

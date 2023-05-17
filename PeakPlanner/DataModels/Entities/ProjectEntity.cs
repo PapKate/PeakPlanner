@@ -1,4 +1,6 @@
-﻿namespace PeakPlannerAPI
+﻿using FoPeakPlannerAPIoli;
+
+namespace PeakPlannerAPI
 {
     /// <summary>
     /// The project entity
@@ -17,7 +19,7 @@
         #region Public Properties
 
         /// <summary>
-        /// The title
+        /// The name
         /// </summary>
         public string Name
         {
@@ -45,6 +47,26 @@
         {
 
         }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Creates and returns a <see cref="ProjectEntity"/> from the specified <paramref name="model"/>
+        /// </summary>
+        /// <param name="projectId">The company's id</param>
+        /// <param name="model">The model</param>
+        /// <returns></returns>
+        public static ProjectEntity FromRequestModel(ProjectRequestModel model)
+            => ControllerHelpers.FromRequestModel<ProjectEntity, ProjectRequestModel>(model);
+
+        /// <summary>
+        /// Creates and returns a <see cref="ProjectResponseModel"/> from the current <see cref="ProjectEntity"/>
+        /// </summary>
+        /// <returns></returns>
+        public ProjectResponseModel ToResponseModel()
+            => ControllerHelpers.ToResponseModel<ProjectEntity, ProjectResponseModel>(this);
 
         #endregion
     }

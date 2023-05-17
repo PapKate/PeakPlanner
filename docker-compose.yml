@@ -1,8 +1,31 @@
 version: '3.4'
 
+networks:
+    backend:
+
 services:
-  peakplannerapi:
-    image: ${DOCKER_REGISTRY-}peakplannerapi
-    build:
-      context: .
-      dockerfile: PeakPlanner/Dockerfile
+    peakplannerdb: 
+        container_name: peakplanner
+        image: mysql:8.0.33-oracle
+        environment: 
+            - MYSQL_ROOT_PASSWORD=12345678
+        ports:
+            - 8003:3306
+        networks:
+            - backend
+    peakplannerapi:
+        container_name: peak-planner-api
+        image: ${DOCKER_REGISTRY-}peakplannerapi
+        build:
+            context: .
+            dockerfile: PeakPlanner/Dockerfile
+        networks:
+            - backend
+        ports:
+            - 8004:80
+        environment:
+            - DB_HOST=peakplannerdb
+            - DB_NAME=peekplanner
+            - DB_ROOT_PASSWORD=12345678
+
+     

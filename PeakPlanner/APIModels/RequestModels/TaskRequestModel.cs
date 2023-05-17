@@ -1,13 +1,16 @@
 ﻿namespace PeakPlannerAPI
 {
-    public class ProjectRequestModel : StandardRequestModel
+    /// <summary>
+    /// The task request model
+    /// </summary>
+    public class TaskRequestModel : StandardRequestModel
     {
         #region Public Properties
 
         /// <summary>
-        /// The name
+        /// The status
         /// </summary>
-        public string? Name { get; set; }
+        public TaskStatus Status { get; set; }
 
         #endregion
 
@@ -16,7 +19,7 @@
         /// <summary>
         /// Default constructor
         /// </summary>
-        public ProjectRequestModel() : base()
+        public TaskRequestModel() : base()
         {
 
         }

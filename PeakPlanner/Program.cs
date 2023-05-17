@@ -18,8 +18,21 @@ namespace PeakPlannerAPI
 
             #region Configure Services
 
+            #region Database Context
+
+            var host = Environment.GetEnvironmentVariable("DB_HOST");
+            var name = Environment.GetEnvironmentVariable("DB_NAME");
+            var password = Environment.GetEnvironmentVariable("DB_ROOT_PASSWORD");
+
+            //var connectionString = "Server=localhost;Database=PeakPlanner;Uid=root;Pwd=12345678;";
+            var connectionString = $"Server={host};Database={name};Uid=root;Pwd={password};";
+
+
+
             builder.Services.AddDbContext<PeekPlannerDBContext>(options
-                => options.UseMySql("Server=localhost;Database=PeekPlanner;Uid=root;Pwd=12345678;", ServerVersion.Parse("8.0.33 (MySQL Community Server - GPL)")));
+                => options.UseMySql(connectionString, ServerVersion.Parse("8.0.33 (MySQL Community Server - GPL)")));
+            
+            #endregion
 
             #region AutoMapper
 
@@ -149,15 +162,16 @@ namespace PeakPlannerAPI
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            DI.Host = app;
 
             #region DbContext
 
-            using var scope = app.Services.CreateScope();
-            var serviceProvider = scope.ServiceProvider;
-            var dbContext = serviceProvider.GetRequiredService<PeekPlannerDBContext>();
-            
-            var result = dbContext.Database.EnsureCreated();
-            
+            //using var scope = app.Services.CreateScope();
+            //var serviceProvider = scope.ServiceProvider;
+            //var dbContext = serviceProvider.GetRequiredService<PeekPlannerDBContext>();
+
+            //var result = dbContext.Database.EnsureCreated();
+
             #endregion
 
             // Configure the HTTP request pipeline.
