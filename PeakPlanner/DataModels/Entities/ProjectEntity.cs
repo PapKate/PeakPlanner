@@ -1,10 +1,16 @@
-﻿namespace PeakPlannerAPI.DataModels.Entities
+﻿namespace PeakPlannerAPI
 {
-    public class ProjectEntity
+    /// <summary>
+    /// The project entity
+    /// </summary>
+    public class ProjectEntity : StandardEntity
     {
     }
 
-    public class TaskEntity
+    /// <summary>
+    /// The task entity
+    /// </summary>
+    public class TaskEntity : StandardEntity
     {
 
     }

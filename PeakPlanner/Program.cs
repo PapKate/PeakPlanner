@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 
 using Newtonsoft.Json.Serialization;
 
-using PeakPlannerAPI.DataModels.Entities;
-
 using System.Reflection;
 
 namespace PeakPlannerAPI
