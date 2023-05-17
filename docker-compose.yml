@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  peakplannerapi:
+    image: ${DOCKER_REGISTRY-}peakplannerapi
+    build:
+      context: .
+      dockerfile: PeakPlanner/Dockerfile
