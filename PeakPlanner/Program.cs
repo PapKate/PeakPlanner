@@ -166,11 +166,11 @@ namespace PeakPlannerAPI
 
             #region DbContext
 
-            //using var scope = app.Services.CreateScope();
-            //var serviceProvider = scope.ServiceProvider;
-            //var dbContext = serviceProvider.GetRequiredService<PeekPlannerDBContext>();
+            using var scope = app.Services.CreateScope();
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<PeekPlannerDBContext>();
 
-            //var result = dbContext.Database.EnsureCreated();
+            var result = dbContext.Database.EnsureCreated();
 
             #endregion
 

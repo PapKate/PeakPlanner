@@ -25,7 +25,7 @@ services:
             - 8004:80
         environment:
             - DB_HOST=peakplannerdb
-            - DB_NAME=peekplanner
+            - DB_NAME=peakplanner
             - DB_ROOT_PASSWORD=12345678
 
      
