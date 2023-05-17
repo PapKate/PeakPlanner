@@ -18,8 +18,8 @@ namespace PeakPlannerAPI
 
             #region Configure Services
 
-            builder.Services.AddDbContext<PeekPlannerDBContext>(options => options.UseMySql("Server=localhost;Database=PeekPlanner;Uid=root;Pwd=12345678;", ServerVersion.Parse("8.0.33 (MySQL Community Server - GPL)")));
-
+            builder.Services.AddDbContext<PeekPlannerDBContext>(options
+                => options.UseMySql("Server=localhost;Database=PeekPlanner;Uid=root;Pwd=12345678;", ServerVersion.Parse("8.0.33 (MySQL Community Server - GPL)")));
 
             #region AutoMapper
 
@@ -150,6 +150,16 @@ namespace PeakPlannerAPI
 
             var app = builder.Build();
 
+            #region DbContext
+
+            using var scope = app.Services.CreateScope();
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<PeekPlannerDBContext>();
+            
+            var result = dbContext.Database.EnsureCreated();
+            
+            #endregion
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -166,16 +176,6 @@ namespace PeakPlannerAPI
             app.MapControllers();
 
             app.Run();
-        }
- 
-        /// <summary>
-        /// Configures the application services
-        /// This method gets called by the runtime. Use this method to add services to the container.
-        /// </summary>
-        /// <param name="services">The application services</param>
-        public void ConfigureServices(IServiceCollection services)
-        {
-            
         }
     }
 }

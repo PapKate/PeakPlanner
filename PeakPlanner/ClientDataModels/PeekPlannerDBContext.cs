@@ -45,8 +45,12 @@ namespace PeakPlannerAPI
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
-
+            modelBuilder.Entity<ProjectEntity>()
+                 .HasMany(x => x.Tasks)
+                 .WithOne(x => x.Project)
+                 .HasPrincipalKey(x => x.Id)
+                 .HasForeignKey(x => x.ProjectId)
+                 .OnDelete(DeleteBehavior.Cascade);
         }
 
         #endregion

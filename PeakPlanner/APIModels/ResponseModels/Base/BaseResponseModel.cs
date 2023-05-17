@@ -1,20 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace PeakPlannerAPI
+﻿namespace PeakPlannerAPI
 {
-    /// <summary>
-    /// The base entity with the date created and modified properties
-    /// </summary>
-    public abstract class BaseEntity : IIdentifiable, IDateable
+    public abstract class BaseResponseModel : IIdentifiable, IDateable
     {
         #region Public Properties
 
         /// <summary>
         /// The id
         /// </summary>
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
@@ -34,7 +26,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// Default constructor
         /// </summary>
-        public BaseEntity() : base()
+        public BaseResponseModel() : base()
         {
 
         }
