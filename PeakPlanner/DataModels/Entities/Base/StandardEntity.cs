@@ -7,40 +7,38 @@
     {
         #region Private Members
 
-        /// <summary>
-        /// The member of the <see cref="Title"/> property
-        /// </summary>
-        private string? mTitle;
+        private uint mProgressPercentage = 0;
 
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        /// The title
-        /// </summary>
-        public string Title 
-        { 
-            get => mTitle ?? string.Empty;
-            set => mTitle = value; 
-        }
-
-        /// <summary>
-        /// The description
-        /// </summary>
-        public string? Description { get; set; }
-
-        /// <summary>
         /// The progress percentage
         /// </summary>
         /// <remarks>Default : 0</remarks>
         /// <value>Min: 0 - Max: 100</value>
-        public uint ProgressPercentage { get; set; } = 0;
+        public uint ProgressPercentage 
+        {
+            get => mProgressPercentage; 
+            set
+            {
+                mProgressPercentage = value;
+                // If the value is greater than 100...
+                if (mProgressPercentage > 100)
+                    mProgressPercentage = 100;
+            }
+        } 
 
         /// <summary>
         /// The start date
         /// </summary>
         public DateTimeOffset DateStart { get; set; }
+
+        /// <summary>
+        /// A flag indicating whether it has a <see cref="DateEnd"/> or not
+        /// </summary>
+        public bool HasDateEnd { get; set; }
 
         /// <summary>
         /// The finish date

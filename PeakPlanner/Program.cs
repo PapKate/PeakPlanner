@@ -3,6 +3,7 @@ using AutoMapper.Internal;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Newtonsoft.Json.Serialization;
 
@@ -29,7 +30,7 @@ namespace PeakPlannerAPI
 
 
 
-            builder.Services.AddDbContext<PeekPlannerDBContext>(options
+            builder.Services.AddDbContext<PeakPlannerDBContext>(options
                 => options.UseMySql(connectionString, ServerVersion.Parse("8.0.33 (MySQL Community Server - GPL)")));
             
             #endregion
@@ -120,6 +121,11 @@ namespace PeakPlannerAPI
                     }
                 }
 
+                cfg.CreateMap<TaskAndLabelEntity, EmbeddedLabelResponseModel>()
+                    .ForMember(x => x.Id, options => options.MapFrom(y => y.Label!.Id))
+                    .ForMember(x => x.Title, options => options.MapFrom(y => y.Label!.Title))
+                    .ForMember(x => x.Color, options => options.MapFrom(y => y.Label!.Color));
+
                 // Do not map values when the values of the properties of the request models are null
                 cfg.Internal().ForAllMaps((map, options) =>
                 {
@@ -155,6 +161,8 @@ namespace PeakPlannerAPI
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
+            builder.Services.AddTransient<TaskRepository>();
+
             #endregion
 
             // Add services to the container.
@@ -168,7 +176,7 @@ namespace PeakPlannerAPI
 
             using var scope = app.Services.CreateScope();
             var serviceProvider = scope.ServiceProvider;
-            var dbContext = serviceProvider.GetRequiredService<PeekPlannerDBContext>();
+            var dbContext = serviceProvider.GetRequiredService<PeakPlannerDBContext>();
 
             var result = dbContext.Database.EnsureCreated();
 

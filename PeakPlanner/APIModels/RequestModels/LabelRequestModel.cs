@@ -1,21 +1,21 @@
 ﻿namespace PeakPlannerAPI
 {
     /// <summary>
-    /// The task request model
+    /// The label request model
     /// </summary>
-    public class TaskRequestModel : StandardRequestModel
+    public class LabelRequestModel : BaseRequestModel
     {
         #region Public Properties
 
         /// <summary>
-        /// The status
+        /// The color
         /// </summary>
-        public TaskStatus? Status { get; set; }
+        public string? Color { get; set; }
 
         /// <summary>
-        /// The label ids
+        /// The id of the parent
         /// </summary>
-        public IEnumerable<int>? LabelIds { get; set; }
+        public int? ParentId { get; set; }
 
         #endregion
 
@@ -24,7 +24,7 @@
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TaskRequestModel() : base()
+        public LabelRequestModel()
         {
 
         }

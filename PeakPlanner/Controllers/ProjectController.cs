@@ -14,7 +14,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The DB context
         /// </summary>
-        private readonly PeekPlannerDBContext mContext;
+        private readonly PeakPlannerDBContext mContext;
 
         #endregion
 
@@ -23,7 +23,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The query used for retrieving the projects
         /// </summary>
-        protected IQueryable<ProjectEntity> ProjectsQuery => mContext.Projects.Include(x => x.Tasks);
+        protected IQueryable<ProjectEntity> ProjectsQuery => mContext.Projects.Include(x => x.Tasks!).ThenInclude(t => t.Labels);
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// Default constructor
         /// </summary>
-        public ProjectController(PeekPlannerDBContext context)
+        public ProjectController(PeakPlannerDBContext context)
         {
             mContext = context;
         }
@@ -67,7 +67,7 @@ namespace PeakPlannerAPI
         [Route(Routes.ProjectsRoute)]
         public Task<ActionResult<IEnumerable<ProjectResponseModel>>> GetProjectsAsync() 
             => ControllerHelpers.GetAllAsync<ProjectEntity, ProjectResponseModel>(
-                ProjectsQuery,
+                ProjectsQuery.AsNoTracking(),
                 x => true);
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace PeakPlannerAPI
         [Route(Routes.ProjectRoute)]
         public Task<ActionResult<ProjectResponseModel>> GetProjectAsync([FromRoute] int projectId)
             => ControllerHelpers.GetAsync<ProjectEntity, ProjectResponseModel>(
-               ProjectsQuery,
+               ProjectsQuery.AsNoTracking(),
                DI.GetMapper,
                x => x.Id == projectId);
 

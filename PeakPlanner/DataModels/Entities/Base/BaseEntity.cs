@@ -8,6 +8,15 @@ namespace PeakPlannerAPI
     /// </summary>
     public abstract class BaseEntity : IIdentifiable, IDateable
     {
+        #region Private Members
+
+        /// <summary>
+        /// The member of the <see cref="Title"/> property
+        /// </summary>
+        private string? mTitle;
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -16,6 +25,20 @@ namespace PeakPlannerAPI
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        /// <summary>
+        /// The title
+        /// </summary>
+        public string Title
+        {
+            get => mTitle ?? string.Empty;
+            set => mTitle = value;
+        }
+
+        /// <summary>
+        /// The description
+        /// </summary>
+        public string? Description { get; set; }
 
         /// <summary>
         /// The date it was created

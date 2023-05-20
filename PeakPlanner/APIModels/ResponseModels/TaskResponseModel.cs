@@ -18,9 +18,9 @@
         public int ProjectId { get; set; }
 
         /// <summary>
-        /// The related <see cref="ProjectResponseModel"/>
+        /// The labels
         /// </summary>
-        public ProjectResponseModel? Project { get; set; }
+        public IEnumerable<LabelResponseModel>? Labels { get; set; }
 
         #endregion
 

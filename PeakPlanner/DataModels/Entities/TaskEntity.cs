@@ -22,12 +22,12 @@ namespace PeakPlannerAPI
         public int ProjectId { get; set; }
 
         /// <summary>
-        /// The related <see cref="ProjectEntity"/>
+        /// The list containing related <see cref="TaskAndLabelEntity"/>
         /// </summary>
-        public ProjectEntity? Project { get; set; }
+        public IEnumerable<TaskAndLabelEntity>? Labels { get; set; }
 
         #endregion
-        
+
         #endregion
 
         #region Constructors

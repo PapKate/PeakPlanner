@@ -15,8 +15,28 @@
         /// </remarks>
         public const string HomeRoute = "peakPlanner";
 
+        /// <summary>
+        /// The labels route
+        /// </summary>
+        /// <remarks>
+        /// <code>
+        /// peakPlanner/labels
+        /// </code>
+        /// </remarks>
+        public const string LabelsRoute = HomeRoute + "/labels";
+
+        /// <summary>
+        /// The label route
+        /// </summary>
+        /// <remarks>
+        /// <code>
+        /// peakPlanner/labels/{labelId}
+        /// </code>
+        /// </remarks>
+        public const string LabelRoute = LabelsRoute + "/{labelId}";
+
         #region Project Routes
-        
+
         /// <summary>
         /// The projects route
         /// </summary>

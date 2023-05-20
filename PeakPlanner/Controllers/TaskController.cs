@@ -14,7 +14,12 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The DB context
         /// </summary>
-        private readonly PeekPlannerDBContext mContext;
+        private readonly PeakPlannerDBContext mContext;
+
+        /// <summary>
+        /// The repository
+        /// </summary>
+        private readonly TaskRepository mRepository;
 
         #endregion
 
@@ -23,7 +28,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The query used for retrieving the projects
         /// </summary>
-        protected IQueryable<TaskEntity> TasksQuery => mContext.Tasks;
+        protected IQueryable<TaskEntity> TasksQuery => mContext.Tasks.Include(x => x.Labels!).ThenInclude(y => y.Label);
 
         #endregion
 
@@ -32,9 +37,10 @@ namespace PeakPlannerAPI
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TaskController(PeekPlannerDBContext context)
+        public TaskController(PeakPlannerDBContext context, TaskRepository repository)
         {
             mContext = context;
+            mRepository = repository;
         }
 
         #endregion
@@ -50,12 +56,12 @@ namespace PeakPlannerAPI
         /// <param name="model">The task request model</param>
         [HttpPost]
         [Route(Routes.TasksRoute)]
-        public Task<ActionResult<TaskResponseModel>> CreateTaskAsync([FromRoute] int projectId, [FromBody] TaskRequestModel model)
-            => ControllerHelpers.PostAsync(
-                mContext,
-                mContext.Tasks,
-                TaskEntity.FromRequestModel(projectId, model),
-                x => x.ToResponseModel());
+        public async Task<ActionResult<TaskResponseModel>> CreateTaskAsync([FromRoute] int projectId, [FromBody] TaskRequestModel model)
+        {
+            var entity = await mRepository.AddTaskAsync(projectId, model);
+
+            return entity.ToResponseModel();
+        }
 
         /// <summary>
         /// Gets all the tasks for the project with the specified <paramref name="projectId"/>
@@ -67,7 +73,7 @@ namespace PeakPlannerAPI
         [Route(Routes.TasksRoute)]
         public Task<ActionResult<IEnumerable<TaskResponseModel>>> GetTasksAsync()
             => ControllerHelpers.GetAllAsync<TaskEntity, TaskResponseModel>(
-                TasksQuery,
+                TasksQuery.AsNoTracking(),
                 x => true);
 
         /// <summary>
@@ -82,7 +88,7 @@ namespace PeakPlannerAPI
         [Route(Routes.TaskRoute)]
         public Task<ActionResult<TaskResponseModel>> GetTaskAsync([FromRoute] int projectId, [FromRoute] int taskId)
             => ControllerHelpers.GetAsync<TaskEntity, TaskResponseModel>(
-               TasksQuery,
+               TasksQuery.AsNoTracking(),
                DI.GetMapper,
                x => x.Id == taskId && x.ProjectId == projectId);
 
@@ -97,12 +103,17 @@ namespace PeakPlannerAPI
         /// <param name="model">The model</param>
         [HttpPut]
         [Route(Routes.TaskRoute)]
-        public Task<ActionResult<TaskResponseModel>> UpdateTaskAsync([FromRoute] int projectId, [FromRoute] int taskId, [FromBody] TaskRequestModel model)
-            => ControllerHelpers.PutAsync<TaskRequestModel, TaskEntity, TaskResponseModel>(
-                mContext,
-                TasksQuery,
-                model,
-                x => x.Id == taskId && x.ProjectId == projectId);
+        public async Task<ActionResult<TaskResponseModel>> UpdateTaskAsync([FromRoute] int projectId, [FromRoute] int taskId, [FromBody] TaskRequestModel model)
+        {
+            // Updates the entity
+            var entity = await mRepository.UpdateTaskAsync(projectId, taskId, model);
+
+            // If the entity does not exist...
+            if (entity is null)
+                return NotFound();
+
+            return entity.ToResponseModel();
+        }
 
         /// <summary>
         /// Deletes the task with the specified <paramref name="taskId"/>

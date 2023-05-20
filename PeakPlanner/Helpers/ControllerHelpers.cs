@@ -31,7 +31,7 @@ namespace FoPeakPlannerAPIoli
         /// <param name="entity">The model</param>
         /// <param name="projector">Creates a <typeparamref name="TResponseModel"/> from the inserted <typeparamref name="TEntity"/></param>
         /// <returns></returns>
-        public static async Task<ActionResult<TResponseModel>> PostAsync<TEntity, TResponseModel>(PeekPlannerDBContext dBContext, DbSet<TEntity> dbSet, TEntity entity, Func<TEntity, TResponseModel> projector)
+        public static async Task<ActionResult<TResponseModel>> PostAsync<TEntity, TResponseModel>(PeakPlannerDBContext dBContext, DbSet<TEntity> dbSet, TEntity entity, Func<TEntity, TResponseModel> projector)
             where TEntity : class
         {
             // Add it to the database
@@ -102,7 +102,7 @@ namespace FoPeakPlannerAPIoli
         /// <param name="model">The request model</param>
         /// <param name="expression">The expression for the entity's search</param>
         /// <returns></returns>
-        public static async Task<ActionResult<TResponseModel>> PutAsync<TRequestModel, TEntity, TResponseModel>(PeekPlannerDBContext dBContext, IQueryable<TEntity> dbSet, TRequestModel model, Expression<Func<TEntity, bool>> expression)
+        public static async Task<ActionResult<TResponseModel>> PutAsync<TRequestModel, TEntity, TResponseModel>(PeakPlannerDBContext dBContext, IQueryable<TEntity> dbSet, TRequestModel model, Expression<Func<TEntity, bool>> expression)
         where TEntity : BaseEntity
         {
             // Gets the entity if exists
