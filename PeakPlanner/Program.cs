@@ -28,8 +28,6 @@ namespace PeakPlannerAPI
             //var connectionString = "Server=localhost;Database=PeakPlanner;Uid=root;Pwd=12345678;";
             var connectionString = $"Server={host};Database={name};Uid=root;Pwd={password};";
 
-
-
             builder.Services.AddDbContext<PeakPlannerDBContext>(options
                 => options.UseMySql(connectionString, ServerVersion.Parse("8.0.33 (MySQL Community Server - GPL)")));
             

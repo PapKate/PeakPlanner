@@ -23,7 +23,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The query used for retrieving the projects
         /// </summary>
-        protected IQueryable<ProjectEntity> ProjectsQuery => mContext.Projects.Include(x => x.Tasks!).ThenInclude(t => t.Labels);
+        protected IQueryable<ProjectEntity> ProjectsQuery => mContext.Projects.Include(x => x.Tasks!).ThenInclude(t => t.Labels!).ThenInclude(p => p.Label);
 
         #endregion
 

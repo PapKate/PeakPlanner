@@ -7,7 +7,15 @@
     {
         #region Private Members
 
+        /// <summary>
+        /// The member of the <see cref="ProgressPercentage"/> property
+        /// </summary>
         private uint mProgressPercentage = 0;
+
+        /// <summary>
+        /// The member of the <see cref="DateEnd"/> property
+        /// </summary>
+        private DateTimeOffset? mDateEnd;
 
         #endregion
 
@@ -43,7 +51,21 @@
         /// <summary>
         /// The finish date
         /// </summary>
-        public DateTimeOffset? DateEnd { get; set; }
+        public DateTimeOffset? DateEnd 
+        {
+            get => mDateEnd;
+            set
+            {
+                // Sets the value
+                mDateEnd = value;
+                // If it is not null and it is smaller than the date start...
+                if(mDateEnd.HasValue && mDateEnd.Value < DateStart)
+                {
+                    // Set the date end the value of the date start
+                    mDateEnd = DateStart;
+                }
+            }
+        }
 
         #endregion
 

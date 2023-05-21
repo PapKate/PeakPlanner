@@ -23,7 +23,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The query used for retrieving the labels
         /// </summary>
-        protected IQueryable<LabelEntity> LabelsQuery => mContext.Labels.Include(x => x.Tasks);
+        protected IQueryable<LabelEntity> LabelsQuery => mContext.Labels;
 
         #endregion
 

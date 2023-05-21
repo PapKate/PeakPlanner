@@ -20,7 +20,7 @@
         /// <summary>
         /// The labels
         /// </summary>
-        public IEnumerable<LabelResponseModel>? Labels { get; set; }
+        public IEnumerable<EmbeddedLabelResponseModel>? Labels { get; set; }
 
         #endregion
 

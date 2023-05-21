@@ -52,13 +52,13 @@ namespace PeakPlannerAPI
             if (model.LabelIds is not null)
             {
                 // Gets the labels from the context
-                var labels = await mDbContext.Labels.Where(x => model.LabelIds.Any(y => y == x.Id)).ToListAsync();
+                var labels = await mDbContext.Labels.Where(x => model.LabelIds.Contains(x.Id)).ToListAsync();
 
                 // Creates a new pair for each label and the task entity
-                var pairsToAdd = labels.Select(x => new TaskAndLabelEntity() { TaskId = taskEntity.Id, LabelId = x.Id });
+                var pairsToAdd = labels.Select(x => new TaskAndLabelEntity() { TaskId = taskEntity.Id, Label = x }).ToList();
              
                 // Adds the pairs to the context
-                await mDbContext.TaskAndLabels.AddRangeAsync(pairsToAdd);
+                mDbContext.TaskAndLabels.AddRange(pairsToAdd);
             
                 // Saves the changes in the database
                 await mDbContext.SaveChangesAsync();
@@ -101,23 +101,23 @@ namespace PeakPlannerAPI
                 if(taskEntity.Labels is not null && model.LabelIds != taskEntity.Labels.Select(x => x.LabelId))
                 {
                     // Gets the pairs where the label id does not exist in the model label ids
-                    var pairsToRemove = taskEntity.Labels.Where(x => model.LabelIds.Any(y => y != x.LabelId)).ToList();
+                    var pairsToRemove = taskEntity.Labels.Where(x => !model.LabelIds.Contains(x.LabelId)).ToList();
                     
                     // Removes the pairs from the context
                     mDbContext.TaskAndLabels.RemoveRange(pairsToRemove);
 
                     // Gets the label ids that do not exist in the labels of the task entity...
                     // And creates the pairs
-                    var pairsToAdd = model.LabelIds.Where(x => taskEntity.Labels.Any(y => x != y.LabelId)).Select(x => new TaskAndLabelEntity() { TaskId = taskEntity.Id, LabelId = x});
+                    var pairsToAdd = model.LabelIds.Where(x => !taskEntity.Labels.Any(y => x == y.LabelId)).Select(x => new TaskAndLabelEntity() { TaskId = taskEntity.Id, LabelId = x});
                 
                     // Adds the pairs to the context
-                    await mDbContext.TaskAndLabels.AddRangeAsync(pairsToAdd);
+                    mDbContext.TaskAndLabels.AddRange(pairsToAdd);
                 }
 
                 var pairs = model.LabelIds.Select(x => new TaskAndLabelEntity() { TaskId = taskEntity.Id, LabelId = x });
 
                 // Adds the pairs to the context
-                await mDbContext.TaskAndLabels.AddRangeAsync(pairs);
+                mDbContext.TaskAndLabels.AddRange(pairs);
 
 
                 // Saves the changes in the database

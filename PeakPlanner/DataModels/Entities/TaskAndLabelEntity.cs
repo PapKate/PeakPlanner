@@ -2,6 +2,14 @@
 {
     public class TaskAndLabelEntity : IIdentifiable
     {
+        #region Private Members
+
+        private LabelEntity? mLabel;
+
+        private int mLabelId;
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -14,12 +22,28 @@
         /// <summary>
         /// The <see cref="BaseEntity.Id"/> of the related <see cref="LabelEntity"/>
         /// </summary>
-        public int LabelId { get; set; }
+        public int LabelId
+        {
+            get => Label?.Id ?? mLabelId;
+
+            set => mLabelId = value;
+        }
 
         /// <summary>
         /// The related <see cref="LabelEntity"/>
         /// </summary>
-        public LabelEntity? Label { get; set; }
+        public LabelEntity? Label
+        {
+            get => mLabel;
+
+            set
+            {
+                mLabel = value;
+
+                if (value == null)
+                    mLabelId = default;
+            }
+        }
 
         /// <summary>
         /// The <see cref="BaseEntity.Id"/> of the related <see cref="TaskEntity"/>
