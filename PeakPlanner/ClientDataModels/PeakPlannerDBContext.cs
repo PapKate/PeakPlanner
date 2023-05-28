@@ -22,9 +22,19 @@ namespace PeakPlannerAPI
         public DbSet<TaskEntity> Tasks { get; set; }
 
         /// <summary>
-        /// The labels
+        /// The project labels
         /// </summary>
         public DbSet<LabelEntity> Labels { get; set; }
+
+        /// <summary>
+        /// The project labels
+        /// </summary>
+        public DbSet<ProjectLabelEntity> ProjectLabels { get; set; }
+
+        /// <summary>
+        /// The task labels
+        /// </summary>
+        public DbSet<TaskLabelEntity> TaskLabels { get; set; }
 
         /// <summary>
         /// The task and label pairs
@@ -70,6 +80,7 @@ namespace PeakPlannerAPI
             #region Labels
 
             modelBuilder.Entity<LabelEntity>()
+                .UseTpcMappingStrategy()
                 .HasMany<LabelEntity>()
                 .WithOne()
                 .HasPrincipalKey(x => x.Id)
@@ -82,6 +93,12 @@ namespace PeakPlannerAPI
                 .HasPrincipalKey(x => x.Id)
                 .HasForeignKey(x => x.LabelId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProjectLabelEntity>()
+                .UseTpcMappingStrategy();
+
+            modelBuilder.Entity<TaskLabelEntity>()
+                .UseTpcMappingStrategy();
 
             #endregion
 

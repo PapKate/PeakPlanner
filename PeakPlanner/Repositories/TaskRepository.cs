@@ -52,7 +52,7 @@ namespace PeakPlannerAPI
             if (model.LabelIds is not null)
             {
                 // Gets the labels from the context
-                var labels = await mDbContext.Labels.Where(x => model.LabelIds.Contains(x.Id)).ToListAsync();
+                var labels = await mDbContext.TaskLabels.Where(x => model.LabelIds.Contains(x.Id)).ToListAsync();
 
                 // Creates a new pair for each label and the task entity
                 var pairsToAdd = labels.Select(x => new TaskAndLabelEntity() { TaskId = taskEntity.Id, Label = x }).ToList();

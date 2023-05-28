@@ -71,4 +71,26 @@ namespace PeakPlannerAPI
 
         #endregion
     }
+
+    public class ProjectLabelEntity : LabelEntity
+    {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public ProjectLabelEntity() : base()
+        {
+
+        }
+    }
+
+    public class TaskLabelEntity : LabelEntity
+    {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public TaskLabelEntity() : base()
+        {
+
+        }
+    }
 }

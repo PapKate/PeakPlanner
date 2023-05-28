@@ -23,7 +23,7 @@ namespace PeakPlannerAPI
         /// <summary>
         /// The query used for retrieving the labels
         /// </summary>
-        protected IQueryable<LabelEntity> LabelsQuery => mContext.Labels;
+        protected IQueryable<LabelEntity> LabelsQuery => mContext.TaskLabels;
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace PeakPlannerAPI
         [HttpPost]
         [Route(Routes.LabelsRoute)]
         public Task<ActionResult<LabelResponseModel>> CreateLabelAsync([FromBody] LabelRequestModel model)
-            => ControllerHelpers.PostAsync(
+            => ControllerHelpers.PostAsync<LabelEntity, LabelResponseModel>(
                 mContext,
                 mContext.Labels,
                 LabelEntity.FromRequestModel(model),
@@ -114,7 +114,7 @@ namespace PeakPlannerAPI
         public Task<ActionResult<LabelResponseModel>> DeleteLabelAsync([FromRoute] int labelId)
             => ControllerHelpers.DeleteAsync<LabelEntity, LabelResponseModel>(
                 mContext,
-                mContext.Labels,
+                mContext.TaskLabels,
                 DI.GetMapper,
                 x => x.Id == labelId);
 
